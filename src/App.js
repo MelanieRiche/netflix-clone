@@ -5,8 +5,11 @@ import Section from './components/Section'
 import './App.css';
 
 const App = () => {
-
+  
+  const genreIncrement = 4
   const [ genres, setGenres ] = useState(null)
+  const [ limit, setLimit ] = useState(genreIncrement)
+
 
   const fetchData = async () => {
     const response = await fetch("/.netlify/functions/getGenres")
@@ -14,7 +17,7 @@ const App = () => {
     // console.log(responseBody)
     setGenres(responseBody.data.reference_list.values)
   }
-
+  console.log(limit)
   useEffect(() => {
     fetchData()
   }, [])
@@ -24,7 +27,13 @@ const App = () => {
    <>
    {/* If genres exists, we'll map it out : */}
     {genres && (Object.values(genres).map((genre) => (<Section genre={genre.value}/>)))}
-   </>
+    <div className="page-end"
+    onMouseEnter={() => {
+      setLimit(limit + genreIncrement)
+    }}
+    >
+    </div>   
+  </>
   )
 }
 
