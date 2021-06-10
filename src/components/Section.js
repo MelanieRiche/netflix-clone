@@ -6,7 +6,10 @@ const Section = ({ genre }) => {
   const [movies, setMovies] = useState(null)
 
   const fetchData = async () => {
-    const response = await fetch("/.netlify/functions/getMovies")
+    const response = await fetch("/.netlify/functions/getMovies", {
+      method: "POST",
+      body: JSON.stringify( { genre: genre }) 
+    })
     const responseBody = await response.json()
     setMovies(responseBody.data.movies_by_genre.values)
 
@@ -15,7 +18,7 @@ const Section = ({ genre }) => {
   useEffect(() => {
     fetchData()
   }, [])
-  console.log(movies)
+
   return (
     <>
     <div>{genre}</div>
