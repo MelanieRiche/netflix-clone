@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react'
+
+import Section from './components/Section'
+
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const genreIncrement = 4
+  const [ genres, setGenres ] = useState(null)
+  const [ limit, setLimit ] = useState(genreIncrement)
+
+
+  const fetchData = async () => {
+    const response = await fetch("/.netlify/functions/getGenres", {
+      method: "POST",
+      body: limit
+    })
+    const responseBody = await response.json()
+    // console.log(responseBody)
+    setGenres(responseBody.data.reference_list.values)
+  }
+  console.log(limit)
+  useEffect(() => {
+    fetchData()
+  }, [, limit])
+
+  console.log(genres)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   <>
+   {/* If genres exists, we'll map it out : */}
+    {genres && (Object.values(genres).map((genre) => (<Section genre={genre.value}/>)))}
+    <div className="page-end"
+    onMouseEnter={() => {
+      setLimit(limit + genreIncrement)
+    }}
+    >
+    </div>   
+  </>
+  )
 }
 
 export default App;
