@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import Card from './Card'
+import '../App.css';
 
 const Section = ({ genre }) => {
   const [movies, setMovies] = useState(null)
@@ -23,7 +24,7 @@ const Section = ({ genre }) => {
 
   return (
     <>
-    <div>{genre}</div>
+    <h2 id={genre}>{genre}</h2>
     {movies && (
       <div className="movie-section">
         {movies.map((movie, index) => (
