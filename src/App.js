@@ -1,42 +1,53 @@
 import { useEffect, useState } from 'react'
 
 import Section from './components/Section'
+import HeroSection from './components/HeroSection'
+import NavBar from './components/NavBar'
 
 import './App.css';
 
 const App = () => {
 
   const genreIncrement = 4
-  const [ genres, setGenres ] = useState(null)
-  const [ limit, setLimit ] = useState(genreIncrement)
+  const [genres, setGenres] = useState(null)
+  const [limit, setLimit] = useState(genreIncrement)
 
 
   const fetchData = async () => {
     const response = await fetch("/.netlify/functions/getGenres", {
       method: "POST",
-      body: limit
+      body: limit,
     })
     const responseBody = await response.json()
     // console.log(responseBody)
     setGenres(responseBody.data.reference_list.values)
   }
-  console.log(limit)
+
+  // console.log(limit)
   useEffect(() => {
     fetchData()
-  }, [, limit])
+  }, [limit])
 
-  console.log(genres)
+  // console.log(genres)
   return (
-   <>
-   {/* If genres exists, we'll map it out : */}
-    {genres && (Object.values(genres).map((genre) => (<Section genre={genre.value}/>)))}
-    <div className="page-end"
-    onMouseEnter={() => {
-      setLimit(limit + genreIncrement)
-    }}
-    >
-    </div>   
-  </>
+    <>
+      <NavBar />
+      <HeroSection />
+      {/* If genres exists, we'll map it out : */}
+      {genres && (
+        <div className="container">
+          {Object.values(genres).map((genre, index) => (
+            <Section key={index} genre={genre.value}/>
+          ))}
+        </div> 
+      )}
+      <div className="page-end"
+        onMouseEnter={() => {
+          setLimit(limit + genreIncrement)
+        }}
+      >
+      </div>   
+    </>
   )
 }
 
